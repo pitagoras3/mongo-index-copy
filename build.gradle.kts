@@ -4,6 +4,7 @@ plugins {
   kotlin("jvm") version "1.8.0"
   `java-library`
   `maven-publish`
+  signing
 }
 
 group = "io.github.pitagoras3"
@@ -68,13 +69,59 @@ tasks.register<Jar>("javadocJar") {
   from(tasks.javadoc.get().destinationDir)
 }
 
+val MAVEN_UPLOAD_USER: String by project
+val MAVEN_UPLOAD_PWD: String by project
+
 publishing {
+  repositories {
+    maven {
+      name = "MavenCentral"
+      val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+      val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
+      url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
+      credentials {
+        username = MAVEN_UPLOAD_USER
+        password = MAVEN_UPLOAD_PWD
+      }
+    }
+  }
   publications {
-    create<MavenPublication>("maven") {
+    create<MavenPublication>("mavenJava") {
       artifactId = "mongo-index-copy"
       from(components["kotlin"])
       artifact(tasks["sourcesJar"])
       artifact(tasks["javadocJar"])
+
+      pom {
+        name.set("mongo-index-copy")
+        description.set("Kotlin/Java library for copying indexes from one MongoDB collection to another.")
+        url.set("https://github.com/pitagoras3/mongo-index-copy")
+        licenses {
+          license {
+            name.set("Apache License 2.0")
+            url.set("https://github.com/pitagoras3/mongo-index-copy/blob/main/LICENSE")
+          }
+        }
+        developers {
+          developer {
+            id.set("pitagoras3")
+            name.set("Szymon Marcinkiewicz")
+            email.set("szymon.mar1@gmail.com")
+          }
+        }
+        scm {
+          connection.set("scm:git:https://github.com/pitagoras3/mongo-index-copy.git")
+          developerConnection.set("scm:git:https://github.com/pitagoras3/mongo-index-copy.git")
+          url.set("https://github.com/pitagoras3/mongo-index-copy")
+        }
+      }
     }
   }
+}
+
+signing {
+  val PGP_SIGNING_KEY: String? by project
+  val PGP_SIGNING_PASSWORD: String? by project
+  useInMemoryPgpKeys(PGP_SIGNING_KEY, PGP_SIGNING_PASSWORD)
+  sign(publishing.publications["mavenJava"])
 }
