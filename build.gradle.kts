@@ -5,10 +5,18 @@ plugins {
   `java-library`
   `maven-publish`
   signing
+  id("pl.allegro.tech.build.axion-release") version "1.14.3"
 }
 
 group = "io.github.pitagoras3"
-version = "1.0.0"
+version = scmVersion.version
+
+scmVersion {
+  tag {
+    prefix.set(project.rootProject.name + "-")
+  }
+  versionCreator("versionWithBranch")
+}
 
 repositories {
   mavenCentral()
@@ -69,9 +77,6 @@ tasks.register<Jar>("javadocJar") {
   from(tasks.javadoc.get().destinationDir)
 }
 
-val MAVEN_UPLOAD_USER: String by project
-val MAVEN_UPLOAD_PWD: String by project
-
 publishing {
   repositories {
     maven {
@@ -80,8 +85,8 @@ publishing {
       val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
       url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
       credentials {
-        username = MAVEN_UPLOAD_USER
-        password = MAVEN_UPLOAD_PWD
+        username = System.getenv("SONATYPE_USERNAME")
+        password = System.getenv("SONATYPE_PASSWORD")
       }
     }
   }
@@ -98,8 +103,8 @@ publishing {
         url.set("https://github.com/pitagoras3/mongo-index-copy")
         licenses {
           license {
-            name.set("Apache License 2.0")
-            url.set("https://github.com/pitagoras3/mongo-index-copy/blob/main/LICENSE")
+            name.set("The Apache License, Version 2.0")
+            url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
           }
         }
         developers {
@@ -119,9 +124,9 @@ publishing {
   }
 }
 
-signing {
-  val PGP_SIGNING_KEY: String? by project
-  val PGP_SIGNING_PASSWORD: String? by project
-  useInMemoryPgpKeys(PGP_SIGNING_KEY, PGP_SIGNING_PASSWORD)
-  sign(publishing.publications["mavenJava"])
+if (System.getenv("PGP_SIGNING_KEY") != null) {
+  signing {
+    useInMemoryPgpKeys(System.getenv("PGP_SIGNING_KEY"), System.getenv("PGP_SIGNING_PASSWORD"))
+    sign(publishing.publications["mavenJava"])
+  }
 }
