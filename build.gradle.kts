@@ -30,7 +30,7 @@ dependencies {
   testImplementation("ch.qos.logback:logback-classic:1.4.5")
   testImplementation("org.testcontainers:mongodb:1.17.6")
   testImplementation("io.kotest:kotest-runner-junit5:5.5.4")
-  testImplementation("io.kotest:kotest-assertions-core:5.5.4")
+  testImplementation("io.kotest:kotest-assertions-core:5.5.5")
   testImplementation("io.kotest.extensions:kotest-extensions-testcontainers:1.3.3") {
     exclude("org.apache.kafka", "kafka-clients")
   }
