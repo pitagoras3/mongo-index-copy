@@ -115,8 +115,8 @@ publishing {
           }
         }
         scm {
-          connection.set("scm:git:https://github.com/pitagoras3/mongo-index-copy.git")
-          developerConnection.set("scm:git:https://github.com/pitagoras3/mongo-index-copy.git")
+          connection.set("scm:git@github.com:pitagoras3/mongo-index-copy.git")
+          developerConnection.set("scm:git@github.com:pitagoras3/mongo-index-copy.git")
           url.set("https://github.com/pitagoras3/mongo-index-copy")
         }
       }
