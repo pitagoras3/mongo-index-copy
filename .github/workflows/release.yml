@@ -30,7 +30,11 @@ jobs:
 
       - name: Release
         if: github.ref == 'refs/heads/main'
-        run: ./gradlew --no-daemon release -Prelease.customPassword=${{ github.token }} -Prelease.customUsername=${{ github.actor }} -Prelease.forceVersion=${{ github.event.inputs.forceVersion }}
+        run: ./gradlew release -Prelease.customPassword=${{ github.token }} -Prelease.customUsername=${{ github.actor }} -Prelease.forceVersion=${{ github.event.inputs.forceVersion }}
 
       - name: Publish to Maven Central
-        run: ./gradlew -PMAVEN_UPLOAD_USER=${{ secrets.SONATYPE_USER }} -PMAVEN_UPLOAD_PWD=${{ secrets.SONATYPE_PASSWORD }} -PPGP_SIGNING_KEY="${{ secrets.PGP_SIGNING_KEY }}" -PPGP_SIGNING_PASSWORD="${{ secrets.PGP_SIGNING_PASSWORD }}" build publish
+        run: ./gradlew build publish
+        env:
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+          PGP_SIGNING_KEY: ${{ secrets.PGP_SIGNING_KEY }}
+          PGP_SIGNING_PASSWORD: ${{ secrets.PGP_SIGNING_PASSWORD }}
