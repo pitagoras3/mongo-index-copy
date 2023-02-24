@@ -5,18 +5,15 @@ plugins {
   `java-library`
   `maven-publish`
   signing
-  id("pl.allegro.tech.build.axion-release") version "1.14.3"
+  id("pl.allegro.tech.build.axion-release") version "1.14.4"
 }
-
-group = "io.github.pitagoras3"
-version = scmVersion.version
 
 scmVersion {
-  tag {
-    prefix.set(project.rootProject.name + "-")
-  }
   versionCreator("versionWithBranch")
 }
+
+project.group = "io.github.pitagoras3"
+project.version = scmVersion.version
 
 repositories {
   mavenCentral()
