@@ -1,8 +1,26 @@
 # mongo-index-copy
 
-Kotlin/Java library for programmatically copying indexes from one MongoDB collection to another.
+Kotlin/Java library for copying MongoDB collection indexes programmatically from one collection to another.
 
-## Usage
+## Installation (Gradle)
+
+```kotlin
+implementation("io.github.pitagoras3:mongo-index-copy:1.0.0")
+```
+
+In case when you already have
+[_MongoDB Java Driver_](https://www.mongodb.com/docs/drivers/java/sync/current/#mongodb-java-driver)
+on your classpath, you can get _mongo-index-copy_ without transitive
+[_MongoDB Java driver_](https://www.mongodb.com/docs/drivers/java/sync/current/#mongodb-java-driver)
+dependency by excluding it:
+
+```kotlin
+implementation("io.github.pitagoras3:mongo-index-copy:1.0.0") {
+  exclude("org.mongodb")
+}
+```
+
+## How to use it?
 
 You have two options to copy indexes from one MongoDB collection to another with _mongo-index-copy_:
 
@@ -25,7 +43,13 @@ Document{{v=2, key=Document{{item=1}}, name=item_1, partialFilterExpression=Docu
 Having list of indexes as `Document` objects, _mongo-index-copy_ maps them to `IndexModel` objects, and creates indexes
 on destination collection using `createIndexes` method from MongoDB Java driver.
 
-## How to build and test it locally?
+## How to build it and test it locally?
+
+**Build:**
+
+```
+./gradlew build
+```
 
 **Run unit tests:**
 
