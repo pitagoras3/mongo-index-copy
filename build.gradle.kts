@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-  api("org.mongodb:mongodb-driver-sync:4.8.2")
+  api("org.mongodb:mongodb-driver-sync:4.9.0")
 
   testImplementation(kotlin("test"))
   testImplementation("ch.qos.logback:logback-core:1.4.5")
