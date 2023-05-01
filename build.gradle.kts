@@ -24,7 +24,7 @@ dependencies {
 
   testImplementation(kotlin("test"))
   testImplementation("ch.qos.logback:logback-core:1.4.5")
-  testImplementation("ch.qos.logback:logback-classic:1.4.5")
+  testImplementation("ch.qos.logback:logback-classic:1.4.7")
   testImplementation("org.testcontainers:mongodb:1.17.6")
   testImplementation("io.kotest:kotest-runner-junit5:5.5.4")
   testImplementation("io.kotest:kotest-assertions-core:5.5.4")
